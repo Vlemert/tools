@@ -6,7 +6,8 @@ var relativeImports = /import\s*{[a-zA-Z0-9_\,\s]+}\s*from\s*'(\.[^\s']+)';\s*/g
 var nonRelativeImports = /import(\s*{?[a-zA-Z0-9_\*\,\s]+}?)?(\s*as\s*[a-zA-Z0-9]+)?(\s*from)?\s*'[a-zA-Z0-9\-]+';\s*/g;
 var importGrouper = /import\s*{([a-zA-Z0-9_\,\s]+)}\s*from\s*'([a-zA-Z0-9\-]+)'\s*;\s*/;
 
-exports.sortFiles = function sortFiles() {
+exports.sortFiles = function sortFiles(_ext) {
+  var ext = _ext || '.js';
   var edges = [];
   var files = {};
 
@@ -15,7 +16,7 @@ exports.sortFiles = function sortFiles() {
     var deps = [];
     var match;
     while (match = relativeImports.exec(contents)) {
-      deps.push(path.relative(file.base, path.resolve(file.base, match[1] + '.js')));
+      deps.push(path.relative(file.base, path.resolve(file.base, match[1] + ext)));
     }
 
     return deps;
